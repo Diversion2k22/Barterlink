@@ -53,7 +53,7 @@ const Home = () => {
             className={style.button}
             onClick={() => connectWallet('injected')}
           >
-            Connection Walled
+            Connect Your Wallet
           </button>
           <div className={style.details}>You need Metamask</div>
         </div>
