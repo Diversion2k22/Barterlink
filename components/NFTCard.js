@@ -30,7 +30,10 @@ const NFTCard = ({ nftItem, title, listings }) => {
   //   }
   // }, [listings, nftItem])
   useEffect(() => {
-    const listing = listings.find((listing) => listing.asset.id === nftItem.id)
+    const listing = listings
+      .slice()
+      .reverse()
+      .find((listing) => listing.asset.id === nftItem.id)
 
     if (Boolean(listing)) {
       setIsListed(true)

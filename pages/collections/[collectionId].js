@@ -45,8 +45,8 @@ const Collection = () => {
     if (!provider) return
 
     const sdk = new ThirdwebSDK(
-      provider.getSigner(),
-      'https://rinkeby.infura.io/v3/a464b9152d8c466c8a94a514fce8e837'
+      provider.getSigner()
+      // 'https://rinkeby.infura.io/v3/a464b9152d8c466c8a94a514fce8e837'
     )
     return sdk.getNFTModule(collectionId)
   }, [provider])
@@ -66,8 +66,8 @@ const Collection = () => {
     if (!provider) return
 
     const sdk = new ThirdwebSDK(
-      provider.getSigner(),
-      'https://rinkeby.infura.io/v3/a464b9152d8c466c8a94a514fce8e837'
+      provider.getSigner()
+      // 'https://rinkeby.infura.io/v3/a464b9152d8c466c8a94a514fce8e837'
     )
     return sdk.getMarketplaceModule(
       '0xc64558a0Dd37668e9fceB3013707889d8a655816'
@@ -111,7 +111,7 @@ const Collection = () => {
     <div className="overflow-hidden">
       <Header />
       {loading ? (
-        <div class="flex h-screen w-full items-center justify-center">
+        <div className="flex h-screen w-full items-center justify-center">
           <div
             class="spinner-border inline-block h-16 w-16 animate-spin rounded-full border-4"
             role="status"

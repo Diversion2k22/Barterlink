@@ -6,6 +6,8 @@ import { ThirdwebSDK } from '@3rdweb/sdk'
 import { useRouter } from 'next/router'
 import NFTImage from '../../components/nft/NFTImage'
 import GeneralDetails from '../../components/nft/GeneralDetails'
+import ItemActivity from '../../components/nft/ItemActivity'
+import Purchase from '../../components/nft/Purchase'
 
 const style = {
   wrapper: `flex flex-col items-center container-lg text-[#e5e8eb]`,
@@ -23,8 +25,8 @@ const Nft = () => {
     if (!provider) return
 
     const sdk = new ThirdwebSDK(
-      provider.getSigner(),
-      'https://rinkeby.infura.io/v3/a464b9152d8c466c8a94a514fce8e837'
+      provider.getSigner()
+      // 'https://rinkeby.infura.io/v3/a464b9152d8c466c8a94a514fce8e837'
     )
     return sdk.getNFTModule('0x9C8B777B905E8185960bED570dC6c2E727925263')
   }, [provider])
@@ -44,8 +46,8 @@ const Nft = () => {
     if (!provider) return
 
     const sdk = new ThirdwebSDK(
-      provider.getSigner(),
-      'https://rinkeby.infura.io/v3/a464b9152d8c466c8a94a514fce8e837'
+      provider.getSigner()
+      // 'https://rinkeby.infura.io/v3/a464b9152d8c466c8a94a514fce8e837'
     )
     return sdk.getMarketplaceModule(
       '0xc64558a0Dd37668e9fceB3013707889d8a655816'
@@ -71,8 +73,15 @@ const Nft = () => {
             </div>
             <div className={style.detailsContainer}>
               <GeneralDetails selectedNft={selectedNft} />
+              <Purchase
+                isListed={router.query.isListed}
+                selectedNft={selectedNft}
+                listings={listings}
+                marketPlaceModule={marketPlaceModule}
+              />
             </div>
           </div>
+          <ItemActivity />
         </div>
       </div>
     </div>
