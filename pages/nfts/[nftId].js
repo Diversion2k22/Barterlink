@@ -20,6 +20,7 @@ const Nft = () => {
   const { provider } = useWeb3()
   const [selectedNft, setSelectedNft] = useState()
   const [listings, setListings] = useState([])
+  const [price, setPrice] = useState()
   const router = useRouter()
   const nftModule = useMemo(() => {
     if (!provider) return
@@ -37,7 +38,7 @@ const Nft = () => {
     ;(async () => {
       const nfts = await nftModule.getAll()
       const selectedNft = nfts.find((nft) => nft.id === router.query.nftId)
-
+      console.log(selectedNft)
       setSelectedNft(selectedNft)
     })()
   }, [nftModule])
@@ -74,6 +75,7 @@ const Nft = () => {
             <div className={style.detailsContainer}>
               <GeneralDetails selectedNft={selectedNft} />
               <Purchase
+                price={price}
                 isListed={router.query.isListed}
                 selectedNft={selectedNft}
                 listings={listings}

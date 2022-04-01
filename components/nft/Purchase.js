@@ -10,7 +10,13 @@ const style = {
   buttonText: `ml-2 text-lg font-semibold`,
 }
 
-const MakeOffer = ({ isListed, selectedNft, listings, marketPlaceModule }) => {
+const MakeOffer = ({
+  isListed,
+  selectedNft,
+  listings,
+  marketPlaceModule,
+  price,
+}) => {
   const [selectedMarketNft, setSelectedMarketNft] = useState()
   const [enableButton, setEnableButton] = useState(false)
 
@@ -75,7 +81,10 @@ const MakeOffer = ({ isListed, selectedNft, listings, marketPlaceModule }) => {
             className={`${style.button} bg-[#2081e2] hover:bg-[#42a0ff]`}
           >
             <IoMdWallet className={style.buttonIcon} />
-            <div className={style.buttonText}>Buy Now</div>
+            <div className={style.buttonText}>
+              Buy Now (
+              {selectedMarketNft?.buyoutCurrencyValuePerToken.displayValue} ETH)
+            </div>
           </div>
           <div
             className={`${style.button} border border-[#151c22]  bg-[#363840] hover:bg-[#4c505c]`}
