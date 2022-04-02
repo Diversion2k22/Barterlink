@@ -33,64 +33,63 @@ const MintButton = () => {
   return (
     <div className="flex h-screen w-screen flex-col items-center justify-center bg-[#3b3d42]">
       <div className="top-0 mt-0 mb-0 h-1/2 w-3/6">
-        <form>
-          <div class="mb-6">
+        <form
+          className="f1"
+          id="f1"
+          method="POST"
+          action="http://localhost:3003/push_ipfs"
+          encType="multipart/htmlForm-data"
+        >
+          <div className="mb-6">
             <label
-              for="email"
-              class="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-300"
+              htmlFor="email"
+              className="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-300"
             >
               NFT name
             </label>
             <input
               type="text"
-              id="text"
-              class=" w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+              id="uname"
+              className=" w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
               placeholder="Name your NFT"
               required
-              ref={nameRef}
+              name="uname"
             />
           </div>
-          <div class="mb-6">
+          <div className="mb-6">
             <label
-              for="password"
-              class="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-300"
+              htmlFor="description"
+              className="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-300"
             >
               NFT description
             </label>
             <input
               type="text"
-              id="text"
-              class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+              id="desc"
+              className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
               required
-              ref={desRef}
+              name="desc"
             />
           </div>
-          <div class="mb-6">
+          <div className="mb-6">
             <label
-              for="password"
-              class="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-300"
+              htmlFor="password"
+              className="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-300"
             >
               Image URL
             </label>
-            <input
-              type="text"
-              id="text"
-              class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-              required
-              ref={imgRef}
-            />
+            <input type="file" id="image" name="image" />
           </div>
+
+          <input
+            type="submit"
+            className="cursor-pointer rounded-lg border border-[#282b2f] bg-[#2081e2] p-[0.8rem] text-xl font-semibold text-black"
+            value="Mint"
+          />
         </form>
-        <button
-          type="submit"
-          className="cursor-pointer rounded-lg border border-[#282b2f] bg-[#2081e2] p-[0.8rem] text-xl font-semibold text-black"
-          onClick={onMintHandler}
-        >
-          Mint NFT
-        </button>
       </div>
     </div>
   )
 }
-// <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+// <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
 export default MintButton
