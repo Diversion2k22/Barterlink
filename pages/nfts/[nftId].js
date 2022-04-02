@@ -3,6 +3,7 @@ import { useWeb3 } from '@3rdweb/hooks'
 import { useEffect, useMemo, useState } from 'react'
 import React from 'react'
 import { ThirdwebSDK } from '@3rdweb/sdk'
+import { ThirdwebSDK as ThirdS } from '@thirdweb-dev/sdk'
 import { useRouter } from 'next/router'
 import NFTImage from '../../components/nft/NFTImage'
 import GeneralDetails from '../../components/nft/GeneralDetails'
@@ -59,7 +60,14 @@ const Nft = () => {
   useEffect(() => {
     if (!marketPlaceModule) return
     ;(async () => {
-      setListings(await marketPlaceModule.getAllListings())
+      const sdk = new ThirdS(
+        provider.getSigner()
+        // 'https://rinkeby.infura.io/v3/a464b9152d8c466c8a94a514fce8e837'
+      )
+      const marketplace = sdk.getMarketplace(
+        '0xc64558a0Dd37668e9fceB3013707889d8a655816'
+      )
+      setListings(await marketplace.getActiveListings())
     })()
   }, [marketPlaceModule])
 

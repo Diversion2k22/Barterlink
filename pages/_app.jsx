@@ -1,5 +1,6 @@
 import '../styles/globals.css'
 import { ThirdwebWeb3Provider } from '@3rdweb/hooks'
+import { ThirdwebProvider } from '@thirdweb-dev/react'
 //chain ID 4 represent Rinkby testnet
 //injected is web3 connection used by metamask
 const supportedChainIds = [4]
@@ -12,7 +13,9 @@ function MyApp({ Component, pageProps }) {
       supportedChainIds={supportedChainIds}
       connectors={connectors}
     >
-      <Component {...pageProps} />
+      <ThirdwebProvider>
+        <Component {...pageProps} />
+      </ThirdwebProvider>
     </ThirdwebWeb3Provider>
   )
 }

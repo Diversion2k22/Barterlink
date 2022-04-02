@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import React from 'react'
 
 const style = {
@@ -29,8 +30,12 @@ const Hero = () => {
               Barterplace is new idea in the NFT marketplace
             </div>
             <div className={style.ctaContainer}>
-              <button className={style.accentedButton}>Explore</button>
-              <button className={style.button}>Create</button>
+              <Link href="/mint">
+                <button className={style.accentedButton}>Mint</button>
+              </Link>
+              <Link href="/collections/0x9C8B777B905E8185960bED570dC6c2E727925263">
+                <button className={style.button}>Collections</button>
+              </Link>
             </div>
           </div>
           <div className={style.cardContainer}>

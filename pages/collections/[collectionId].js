@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useWeb3 } from '@3rdweb/hooks'
 import { client } from '../../lib/sanityClient'
 import { ThirdwebSDK } from '@3rdweb/sdk'
+import { ThirdwebSDK as ThirdS } from '@thirdweb-dev/sdk'
 import Header from '../../components/Header'
 import { CgWebsite } from 'react-icons/cg'
 import { AiOutlineInstagram, AiOutlineTwitter } from 'react-icons/ai'
@@ -78,7 +79,14 @@ const Collection = () => {
   useEffect(() => {
     if (!marketPlaceModule) return
     ;(async () => {
-      setListings(await marketPlaceModule.getAllListings())
+      const sdk = new ThirdS(
+        provider.getSigner()
+        // 'https://rinkeby.infura.io/v3/a464b9152d8c466c8a94a514fce8e837'
+      )
+      const marketplace = sdk.getMarketplace(
+        '0xc64558a0Dd37668e9fceB3013707889d8a655816'
+      )
+      setListings(await marketplace.getActiveListings())
       console.log('skldflsdf')
     })()
   }, [marketPlaceModule])

@@ -33,7 +33,7 @@ const NFTCard = ({ nftItem, title, listings }) => {
     const listing = listings
       .slice()
       .reverse()
-      .find((listing) => listing.asset.id === nftItem.id)
+      .find((listing) => listing.asset.uri === nftItem.uri)
 
     if (Boolean(listing)) {
       setIsListed(true)

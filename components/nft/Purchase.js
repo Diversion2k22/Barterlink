@@ -27,7 +27,7 @@ const MakeOffer = ({
         listings
           .slice()
           .reverse()
-          .find((marketNft) => marketNft.asset?.id === selectedNft.id)
+          .find((marketNft) => marketNft.asset.uri === selectedNft.uri)
       )
     })()
   }, [selectedNft, listings, isListed])
