@@ -36,12 +36,12 @@ const style = {
 const Collection = () => {
   const router = useRouter()
   const { provider } = useWeb3()
-  const { collectionId } = router.query
+  const { uid } = router.query
   const [collection, setCollection] = useState({})
   const [nfts, setNfts] = useState([])
   const [listings, setListings] = useState([])
   const [loading, setLoading] = useState(true)
-
+  const collectionId = '0xF0F1CA164a58056dd0099872Ee251736ea399b1D'
   const nftModule = useMemo(() => {
     if (!provider) return
 
@@ -56,7 +56,7 @@ const Collection = () => {
   useEffect(() => {
     if (!nftModule) return
     ;(async () => {
-      const nfts = await nftModule.getAll()
+      const nfts = await nftModule.getOwned(uid)
 
       setNfts(nfts)
       setLoading(false)
@@ -145,8 +145,8 @@ const Collection = () => {
               <img
                 className={style.profileImg}
                 src={
-                  collection?.imageUrl
-                    ? collection.imageUrl
+                  nfts[0]?.image
+                    ? nfts[0]?.image
                     : 'https://via.placeholder.com/200'
                 }
                 alt="profile image"
@@ -176,53 +176,16 @@ const Collection = () => {
               </div>
             </div>
             <div className={style.midRow}>
-              <div className={style.title}>{collection?.title}</div>
+              <div className={style.title}>User Profile</div>
             </div>
             <div className={style.midRow}>
-              <div className={style.createdBy}>
-                {console.log(collection)}
-                Created By{' '}
-                <span className="text-[#2081e2]">{collection?.creator}</span>
+              <div className={style.createdBy}>{uid}</div>
+            </div>
+            <div className={style.midRow}>
+              <div>
+                <div className={style.statValue}>{nfts.length}</div>
+                <div className={style.statName}>items</div>
               </div>
-            </div>
-            <div className={style.midRow}>
-              <div className={style.statsContainer}>
-                <div className={style.collectionStat}>
-                  <div className={style.statValue}>{nfts.length}</div>
-                  <div className={style.statName}>items</div>
-                </div>
-                <div className={style.collectionStat}>
-                  <div className={style.statValue}>
-                    {collection?.allOwners ? collection.allOwners.length : ''}
-                  </div>
-                  <div className={style.statName}>owners</div>
-                </div>
-                <div className={style.collectionStat}>
-                  <div className={style.statValue}>
-                    <img
-                      src="https://storage.opensea.io/files/6f8e2979d428180222796ff4a33ab929.svg"
-                      alt="eth"
-                      className={style.ethLogo}
-                    />
-                    {collection?.floorPrice}
-                  </div>
-                  <div className={style.statName}>floor price</div>
-                </div>
-                <div className={style.collectionStat}>
-                  <div className={style.statValue}>
-                    <img
-                      src="https://storage.opensea.io/files/6f8e2979d428180222796ff4a33ab929.svg"
-                      alt="eth"
-                      className={style.ethLogo}
-                    />
-                    {collection?.volumeTraded}.5K
-                  </div>
-                  <div className={style.statName}>volume traded</div>
-                </div>
-              </div>
-            </div>
-            <div className={style.midRow}>
-              <div className={style.description}>{collection?.description}</div>
             </div>
           </div>
           <div

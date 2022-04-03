@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import openseaLogo from '../assets/opensea.png'
+import openseaLogo from '../assets/logo.png'
 import { AiOutlineSearch } from 'react-icons/ai'
 import { CgProfile } from 'react-icons/cg'
 import { MdOutlineAccountBalanceWallet } from 'react-icons/md'
+import { useWeb3 } from '@3rdweb/hooks'
+import { useMetamask } from '@thirdweb-dev/react'
+import toast, { Toaster } from 'react-hot-toast'
 const style = {
   wrapper: `bg-[#04111d] w-screen px-[1.2rem] py-[0.8rem] flex `,
   logoContainer: `flex items-center cursor-pointer`,
@@ -18,8 +21,24 @@ const style = {
 }
 
 const Header = () => {
+  const { address, connectWallet, disconnectWallet } = useWeb3()
+  const [connected, setConnected] = useState(false)
+  useEffect(() => {
+    if (address) {
+      setConnected(true)
+    }
+  }, [address])
+  const welcomeUser = (toastHandler = toast) => {
+    toastHandler.success(`Connected to ${address}!`, {
+      style: {
+        background: '#04111d',
+        color: '#fff',
+      },
+    })
+  }
   return (
     <div className={style.wrapper}>
+      <Toaster position="top-center" reverseOrder={false} />
       <Link href="/">
         <div className={style.logoContainer}>
           <Image src={openseaLogo} height={40} width={40}></Image>
@@ -42,15 +61,26 @@ const Header = () => {
         <Link href="/mint">
           <div className={style.headerItem}>Mint</div>
         </Link>
-        <div className={style.headerItem}>Profile</div>
-        <div className={style.headerItem}>Wallet</div>
-        <div className={style.headerIcon}>
-          <CgProfile />
-        </div>
-        <div className={style.headerIcon}>
-          {' '}
+
+        <Link href={`/users/${address}`}>
+          <div className={style.headerItem}>
+            {' '}
+            <CgProfile />
+          </div>
+        </Link>
+
+        <button
+          className={style.headerIcon}
+          onClick={() => {
+            if (connected) {
+              disconnectWallet('injected')
+            } else {
+              connectWallet('injected')
+            }
+          }}
+        >
           <MdOutlineAccountBalanceWallet />
-        </div>
+        </button>
       </div>
     </div>
   )

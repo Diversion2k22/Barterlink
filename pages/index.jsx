@@ -15,6 +15,7 @@ const style = {
 }
 const Home = () => {
   const { address, connectWallet } = useWeb3()
+
   const welcomeUser = (userName, toastHandler = toast) => {
     toastHandler.success(
       `Welcome back ${userName != 'Unnamed' ? `${userName}` : ''}!`,
