@@ -32,7 +32,7 @@ const Home = () => {
       const userDoc = {
         _type: 'users',
         _id: address,
-        userName: 'Unnamed',
+        userName: address,
         walletAddress: address,
       }
       const result = await client.createIfNotExists(userDoc)
@@ -41,7 +41,7 @@ const Home = () => {
   }, [address])
   return (
     <div className={style.wrapper}>
-      <Toaster position="bottom-left" reverseOrder={false} />
+      <Toaster position="top-center" reverseOrder={false} />
       {address ? (
         <>
           <Header />

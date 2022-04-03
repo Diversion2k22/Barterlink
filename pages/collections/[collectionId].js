@@ -224,7 +224,10 @@ const Collection = () => {
               <div className={style.description}>{collection?.description}</div>
             </div>
           </div>
-          <div className="flex flex-wrap ">
+          <div
+            className=" flex-basis-0 flex flex-grow-0
+          flex-row flex-wrap "
+          >
             {console.log(nfts)}
             {console.log(listings)}
             {nfts.map((nft, id) => (

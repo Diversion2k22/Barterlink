@@ -2,6 +2,7 @@ import { ThirdwebSDK } from '@3rdweb/sdk'
 import React, { useMemo, useRef, useState } from 'react'
 import { useWeb3 } from '@3rdweb/hooks'
 import axios from 'axios'
+import toast, { Toaster } from 'react-hot-toast'
 
 const MintButton = () => {
   const { address, provider } = useWeb3()
@@ -16,6 +17,14 @@ const MintButton = () => {
   const nameRef = useRef()
   const imgRef = useRef()
   const desRef = useRef()
+  const welcomeUser = (toastHandler = toast) => {
+    toastHandler.success(`Minted Successfully!`, {
+      style: {
+        background: '#04111d',
+        color: '#fff',
+      },
+    })
+  }
   const onMintHandler = async (e) => {
     // Address of the wallet you want to mint the NFT to
     // await nftModule.grantRole(
@@ -43,21 +52,26 @@ const MintButton = () => {
       data: formData,
     }
 
-    axios(config).then(async (res) => {
-      console.log(res)
-      const metadata = {
-        name: nameRef.current.value,
-        description: desRef.current.value,
-        image: `ipfs://${res.data}`, // This can be an image url or file
-      }
+    axios(config)
+      .then(async (res) => {
+        console.log(res)
+        const metadata = {
+          name: nameRef.current.value,
+          description: desRef.current.value,
+          image: `ipfs://${res.data}`, // This can be an image url or file
+        }
 
-      await nftModule.mintTo(address, metadata)
-    })
+        await nftModule.mintTo(address, metadata)
+      })
+      .then(() => {
+        welcomeUser()
+      })
   }
 
   return (
     <div className="flex h-screen w-screen flex-col items-center justify-center bg-[#3b3d42]">
       <div className="top-0 mt-0 mb-0 h-1/2 w-3/6">
+        <Toaster position="top-center" reverseOrder={false} />
         <form className="f1" id="f1" onSubmit={onMintHandler}>
           <div className="mb-6">
             <label

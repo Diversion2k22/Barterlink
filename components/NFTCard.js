@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { BiHeart } from 'react-icons/bi'
 import Router from 'next/router'
 const style = {
-  wrapper: `bg-[#303339] flex-auto w-[14rem] h-[22rem] my-10 mx-5 rounded-2xl overflow-hidden cursor-pointer`,
+  wrapper: `bg-[#303339] flex-basis-0 flex-auto flex-grow-0 w-[14rem] h-[22rem] my-10 mx-5 rounded-2xl overflow-hidden cursor-pointer`,
   imgContainer: `h-2/3 w-full overflow-hidden flex justify-center items-center`,
   nftImg: `w-full object-cover`,
   details: `p-3`,
