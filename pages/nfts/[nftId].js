@@ -18,11 +18,11 @@ const style = {
   detailsContainer: `flex-[2] ml-4`,
 }
 const Nft = () => {
-  const { provider } = useWeb3()
   const [selectedNft, setSelectedNft] = useState()
   const [listings, setListings] = useState([])
   const [price, setPrice] = useState()
   const router = useRouter()
+  const { provider } = useWeb3()
   const nftModule = useMemo(() => {
     if (!provider) return
 
@@ -52,7 +52,7 @@ const Nft = () => {
       // 'https://rinkeby.infura.io/v3/a464b9152d8c466c8a94a514fce8e837'
     )
     return sdk.getMarketplaceModule(
-      '0xc64558a0Dd37668e9fceB3013707889d8a655816'
+      '0x39aad5c3DfD0C1799e442193ED1a445bd12E0a74'
     )
   }, [provider])
 
@@ -87,6 +87,7 @@ const Nft = () => {
                 isListed={router.query.isListed}
                 selectedNft={selectedNft}
                 listings={listings}
+                id={router.query.nftId}
                 marketPlaceModule={marketPlaceModule}
               />
             </div>

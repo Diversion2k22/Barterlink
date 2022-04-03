@@ -35,7 +35,7 @@ const Hero = () => {
               <Link href="/mint">
                 <button className={style.accentedButton}>Mint</button>
               </Link>
-              <Link href="/collections/0x9C8B777B905E8185960bED570dC6c2E727925263">
+              <Link href="/collections/0x39aad5c3DfD0C1799e442193ED1a445bd12E0a74">
                 <button className={style.button}>Collections</button>
               </Link>
             </div>

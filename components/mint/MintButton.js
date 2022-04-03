@@ -3,16 +3,21 @@ import React, { useMemo, useRef, useState } from 'react'
 import { useWeb3 } from '@3rdweb/hooks'
 import axios from 'axios'
 import toast, { Toaster } from 'react-hot-toast'
+import Link from 'next/link'
 
 const MintButton = () => {
   const { address, provider } = useWeb3()
+  const [imgP, setImgP] = useState()
   const [img, setImg] = useState()
+  const [minter, setMinter] = useState(false)
+
   const nftModule = useMemo(() => {
     if (!provider) return
     console.log(provider.getSigner())
     const sdk = new ThirdwebSDK(provider.getSigner())
     console.log(sdk)
-    return sdk.getNFTModule('0xF0F1CA164a58056dd0099872Ee251736ea399b1D')
+
+    return sdk.getNFTModule('0x39aad5c3DfD0C1799e442193ED1a445bd12E0a74')
   }, [provider])
   const nameRef = useRef()
   const imgRef = useRef()
@@ -25,6 +30,7 @@ const MintButton = () => {
       },
     })
   }
+
   const onMintHandler = async (e) => {
     // Address of the wallet you want to mint the NFT to
     // await nftModule.grantRole(
@@ -60,6 +66,7 @@ const MintButton = () => {
           description: desRef.current.value,
           image: `ipfs://${res.data}`, // This can be an image url or file
         }
+        const imgURL = `View your nft: ipfs.io/ipfs/${res.data}`
 
         await nftModule.mintTo(address, metadata)
       })
@@ -129,6 +136,17 @@ const MintButton = () => {
             value="Mint NFT"
           />
         </form>
+        {imgP ? (
+          <div className="mt-6">
+            <div className="flex justify-center">
+              <div className="w-full">
+                <a href={`https://${imgP}`}>View Your NFT</a>
+              </div>
+            </div>
+          </div>
+        ) : (
+          ' '
+        )}
       </div>
     </div>
   )
