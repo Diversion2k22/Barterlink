@@ -1,59 +1,64 @@
 import { ThirdwebSDK } from '@3rdweb/sdk'
-import React, { useMemo, useRef } from 'react'
+import React, { useMemo, useRef, useState } from 'react'
 import { useWeb3 } from '@3rdweb/hooks'
+import axios from 'axios'
 
 const MintButton = () => {
   const { address, provider } = useWeb3()
+  const [img, setImg] = useState()
   const nftModule = useMemo(() => {
     if (!provider) return
     console.log(provider.getSigner())
     const sdk = new ThirdwebSDK(provider.getSigner())
     console.log(sdk)
-    return sdk.getNFTModule('0xcdfCB3d9bE5C5E97Ee4BF7710DaAE6D5F74C30a9')
+    return sdk.getNFTModule('0xF0F1CA164a58056dd0099872Ee251736ea399b1D')
   }, [provider])
   const nameRef = useRef()
   const imgRef = useRef()
   const desRef = useRef()
-  const onMintHandler = async () => {
+  const onMintHandler = async (e) => {
     // Address of the wallet you want to mint the NFT to
     // await nftModule.grantRole(
     //   'minter',
     //   '0x590Db7F78427BFBF99e700Eb4CADA95165Ed5DF8'
     // )
     // Custom metadata of the NFT, note that you can fully customize this metadata with other properties.
-
+    e.preventDefault()
     // make a backend server api request to mint an NFT
-
-    // const url = await fetch('http://localhost:3005/img_add', {
+    const formData = new FormData()
+    formData.append('name', nameRef.current.value)
+    formData.append('desc', desRef.current.value)
+    formData.append('image', img)
+    console.log(formData.get('image'))
+    // const config = {
+    //   url: 'http://localhost:3005/h',
     //   method: 'GET',
-    //   headers: {
-    //     'content-type': 'application/json',
-    //   },
-    // })
-
-    fetch('http://localhost:3005/img_add').then((res) => {
-      console.log(res)
-    })
-
-    // const metadata = {
-    //   name: nameRef.current.value,
-    //   description: desRef.current.value,
-    //   image: url, // This can be an image url or file
+    //   timeout: '60000',
     // }
 
-    // await nftModule.mintTo(address, metadata)
+    const config = {
+      url: 'http://localhost:3005/push_ipfs',
+      method: 'POST',
+      timeout: '60000',
+      data: formData,
+    }
+
+    axios(config).then(async (res) => {
+      console.log(res)
+      const metadata = {
+        name: nameRef.current.value,
+        description: desRef.current.value,
+        image: `ipfs://${res.data}`, // This can be an image url or file
+      }
+
+      await nftModule.mintTo(address, metadata)
+    })
   }
 
   return (
     <div className="flex h-screen w-screen flex-col items-center justify-center bg-[#3b3d42]">
       <div className="top-0 mt-0 mb-0 h-1/2 w-3/6">
-        <form
-          className="f1"
-          id="f1"
-          method="POST"
-          action="http://localhost:3005/push_ipfs"
-          encType="multipart/Form-data"
-        >
+        <form className="f1" id="f1" onSubmit={onMintHandler}>
           <div className="mb-6">
             <label
               htmlFor="email"
@@ -94,26 +99,25 @@ const MintButton = () => {
             >
               Image URL
             </label>
-            <input type="file" id="image" name="image" ref={imgRef} />
+            <input
+              type="file"
+              id="image"
+              name="image"
+              onChange={(e) => {
+                setImg(e.target.files[0])
+              }}
+            />
           </div>
 
           <input
             type="submit"
             className="cursor-pointer rounded-lg border border-[#282b2f] bg-[#2081e2] p-[0.8rem] text-xl font-semibold text-black"
-            value="Add NFT"
+            value="Mint NFT"
           />
         </form>
-        <button
-          className="cursor-pointer rounded-lg border border-[#282b2f] bg-[#2081e2] p-[0.8rem] text-xl font-semibold text-black"
-          value="Mint"
-          onClick={onMintHandler}
-        >
-          Mint
-        </button>
       </div>
     </div>
   )
 }
 
-// <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
 export default MintButton
