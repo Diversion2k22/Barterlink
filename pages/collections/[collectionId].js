@@ -121,10 +121,10 @@ const Collection = () => {
       {loading ? (
         <div className="flex h-screen w-full items-center justify-center">
           <div
-            class="spinner-border inline-block h-16 w-16 animate-spin rounded-full border-4"
+            className="spinner-border inline-block h-16 w-16 animate-spin rounded-full border-4"
             role="status"
           >
-            <span class="visually-hidden"></span>
+            <span className="visually-hidden"></span>
           </div>
         </div>
       ) : (
