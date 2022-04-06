@@ -123,16 +123,23 @@ const MakeOffer = ({
           </div>
         </div>
       ) : (
-        // <div
-        //   className={`${style.button} bg-[#2081e2] hover:bg-[#42a0ff]`}
-        //   onClick={() => {
-        //     listItemHandler()
-        //   }}
-        // >
-        //   <IoMdWallet className={style.buttonIcon} />
-        //   <button className={style.buttonText}>List Item</button>
-        // </div>
-        ' '
+        <div>
+          <div
+            className={`${style.button} border border-[#151c22]  bg-[#363840] hover:bg-[#4c505c]`}
+          >
+            <HiTag className={style.buttonIcon} />
+            <div className={style.buttonText}>Make Offer</div>
+          </div>
+          <div
+            className={`${style.button} bg-[#2081e2] hover:bg-[#42a0ff]`}
+            onClick={() => {
+              listItemHandler()
+            }}
+          >
+            <IoMdWallet className={style.buttonIcon} />
+            <button className={style.buttonText}>List Item</button>
+          </div>
+        </div>
       )}
     </div>
   )

@@ -7,10 +7,10 @@ import Link from 'next/link'
 
 const MintButton = () => {
   const { address, provider } = useWeb3()
-  const [imgP, setImgP] = useState()
+  const [show, setShow] = useState(false)
   const [img, setImg] = useState()
   const [minter, setMinter] = useState(false)
-
+  const [path, setPath] = useState()
   const nftModule = useMemo(() => {
     if (!provider) return
     console.log(provider.getSigner())
@@ -52,7 +52,7 @@ const MintButton = () => {
     // }
 
     const config = {
-      url: 'http://localhost:3003/push_ipfs',
+      url: 'http://localhost:3005/push_ipfs',
       method: 'POST',
       timeout: '60000',
       data: formData,
@@ -66,9 +66,14 @@ const MintButton = () => {
           description: desRef.current.value,
           image: `ipfs://${res.data}`, // This can be an image url or file
         }
-        const imgURL = `View your nft: ipfs.io/ipfs/${res.data}`
-
-        await nftModule.mintTo(address, metadata)
+        const imgURL = `ipfs.io/ipfs/${res.data}`
+        if (minter) {
+          await nftModule.mintTo(address, metadata)
+          setPath('')
+        } else {
+          setPath(imgURL)
+          setShow(true)
+        }
       })
       .then(() => {
         welcomeUser()
@@ -79,6 +84,10 @@ const MintButton = () => {
     <div className="flex h-screen w-screen flex-col items-center justify-center bg-[#3b3d42]">
       <div className="top-0 mt-0 mb-0 h-1/2 w-3/6">
         <Toaster position="top-center" reverseOrder={false} />
+        <h1 className="text-3xl font-bold text-white">
+          You need special roles to mint to Barterplace.(Comming Soon) For now
+          you can upload your image to IPFS and view it.
+        </h1>
         <form className="f1" id="f1" onSubmit={onMintHandler}>
           <div className="mb-6">
             <label
@@ -136,16 +145,23 @@ const MintButton = () => {
             value="Mint NFT"
           />
         </form>
-        {imgP ? (
+        {show ? (
           <div className="mt-6">
             <div className="flex justify-center">
               <div className="w-full">
-                <a href={`https://${imgP}`}>View Your NFT</a>
+                <Link href={`https://${path}`} passHref={true}>
+                  <a target="_blank" className="text-xl font-bold text-white">
+                    <button className="cursor-pointer rounded-lg border border-[#282b2f] bg-[#d6dc1f] p-[0.8rem] text-xl font-semibold text-black">
+                      {' '}
+                      View NFT
+                    </button>
+                  </a>
+                </Link>
               </div>
             </div>
           </div>
         ) : (
-          ' '
+          ''
         )}
       </div>
     </div>

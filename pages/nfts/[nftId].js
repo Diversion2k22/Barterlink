@@ -22,7 +22,7 @@ const Nft = () => {
   const [listings, setListings] = useState([])
   const [price, setPrice] = useState()
   const router = useRouter()
-  const { provider } = useWeb3()
+  const { provider, address } = useWeb3()
   const nftModule = useMemo(() => {
     if (!provider) return
 
