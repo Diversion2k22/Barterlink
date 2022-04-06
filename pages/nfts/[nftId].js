@@ -30,7 +30,7 @@ const Nft = () => {
       provider.getSigner()
       // 'https://rinkeby.infura.io/v3/a464b9152d8c466c8a94a514fce8e837'
     )
-    return sdk.getNFTModule('0xF0F1CA164a58056dd0099872Ee251736ea399b1D')
+    return sdk.getNFTModule('0x39aad5c3DfD0C1799e442193ED1a445bd12E0a74')
   }, [provider])
 
   //get all the NFTs in the collection
@@ -52,7 +52,7 @@ const Nft = () => {
       // 'https://rinkeby.infura.io/v3/a464b9152d8c466c8a94a514fce8e837'
     )
     return sdk.getMarketplaceModule(
-      '0x39aad5c3DfD0C1799e442193ED1a445bd12E0a74'
+      '0xc64558a0Dd37668e9fceB3013707889d8a655816'
     )
   }, [provider])
 
@@ -68,6 +68,7 @@ const Nft = () => {
         '0xc64558a0Dd37668e9fceB3013707889d8a655816'
       )
       setListings(await marketplace.getActiveListings())
+      console.log(listings)
     })()
   }, [marketPlaceModule])
 
@@ -87,8 +88,8 @@ const Nft = () => {
                 isListed={router.query.isListed}
                 selectedNft={selectedNft}
                 listings={listings}
-                id={router.query.nftId}
                 marketPlaceModule={marketPlaceModule}
+                id={router.query.nftId}
               />
             </div>
           </div>

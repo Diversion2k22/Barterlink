@@ -52,7 +52,7 @@ const MintButton = () => {
     // }
 
     const config = {
-      url: 'http://localhost:3005/push_ipfs',
+      url: 'http://localhost:3003/push_ipfs',
       method: 'POST',
       timeout: '60000',
       data: formData,

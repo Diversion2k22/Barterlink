@@ -41,7 +41,7 @@ const Collection = () => {
   const [nfts, setNfts] = useState([])
   const [listings, setListings] = useState([])
   const [loading, setLoading] = useState(true)
-  const collectionId = '0xF0F1CA164a58056dd0099872Ee251736ea399b1D'
+  const collectionId = '0x39aad5c3DfD0C1799e442193ED1a445bd12E0a74'
   const nftModule = useMemo(() => {
     if (!provider) return
 
