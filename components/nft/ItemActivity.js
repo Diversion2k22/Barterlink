@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { CgArrowsExchangeV } from 'react-icons/cg'
 import { AiOutlineDown, AiOutlineUp } from 'react-icons/ai'
 import { useState } from 'react'
-
+import { client } from '../../lib/sanityClient'
 import EventItem from './ItemActivity/EventItem'
 import { dummyEvents } from '../../static/dummyEvents'
 
@@ -19,9 +19,29 @@ const style = {
   ethLogo: `h-5 mr-2`,
   accent: `text-[#2081e2]`,
 }
-const ItemActivity = () => {
+const ItemActivity = (id) => {
   const [toggle, setToggle] = useState(true)
+  const [events, setEvents] = useState([])
+  console.log(id.id)
+  const ref = id.id ? id.id : 0
+  const fetchCollectionData = async (sanityClient = client) => {
+    const query = `*[_type == "transactions" && nftReference._ref == "${ref}"]{
+      "type": transactionType,
+      "amount": transactionAmount,
+      "date": transactionDate,
+      "from": transactionFrom,
+      "to": transactionTo,}`
 
+    const collectionData = await sanityClient.fetch(query)
+    console.log(collectionData)
+    // the query returns 1 object inside of an array
+    setEvents(collectionData)
+  }
+  useEffect(() => {
+    if (!id) return
+    fetchCollectionData()
+    console.log(events, 'events')
+  }, [id])
   return (
     <div className={style.wrapper}>
       <div className={style.title} onClick={() => setToggle(!toggle)}>
@@ -40,8 +60,7 @@ const ItemActivity = () => {
           <div className={style.filter}>
             <div className={style.filterTitle}>Filter</div>
             <div className={style.filterIcon}>
-              {' '}
-              <AiOutlineDown />{' '}
+              <AiOutlineDown />
             </div>
           </div>
           <div className={style.tableHeader}>
@@ -51,9 +70,12 @@ const ItemActivity = () => {
             <div className={`${style.tableHeaderElement} flex-[3]`}>To</div>
             <div className={`${style.tableHeaderElement} flex-[2]`}>Date</div>
           </div>
-          {dummyEvents?.map((event, id) => (
-            <EventItem key={id} event={event} />
-          ))}
+          {events
+            .slice()
+            .reverse()
+            .map((event) => (
+              <EventItem event={event} />
+            ))}
         </div>
       )}
     </div>

@@ -12,13 +12,16 @@ const style = {
 }
 
 const EventItem = ({ event }) => {
+  {
+    console.log(event, '🎆')
+  }
   return (
     <div className={style.eventItem}>
       <div className={`${style.event} flex-[2]`}>
         <div className={style.eventIcon}>
           <BsFillCartFill />
         </div>
-        <div className={style.eventName}>Sale</div>
+        <div className={style.eventName}>{event.type}</div>
       </div>
       <div className={`${style.eventPrice} flex-[2]`}>
         <img
@@ -26,10 +29,14 @@ const EventItem = ({ event }) => {
           alt="eth"
           className={style.ethLogo}
         />
-        <div className={style.eventPriceValue}>{event.price}</div>
+        {event.amount}
       </div>
-      <div className={`${style.accent} flex-[3]`}>{event.from}</div>
-      <div className={`${style.accent} flex-[3]`}>{event.to}</div>
+      <div className={`${style.accent} flex-[3]`}>
+        {event.from._ref.slice(0, 10) + '...'}
+      </div>
+      <div className={`${style.accent} flex-[3]`}>
+        {event.to ? event.to._ref.slice(0, 10) + '...' : ''}
+      </div>
       <div className={`${style.accent} flex-[2]`}>{event.date}</div>
     </div>
   )

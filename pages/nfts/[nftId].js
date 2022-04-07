@@ -22,6 +22,7 @@ const Nft = () => {
   const [listings, setListings] = useState([])
   const [price, setPrice] = useState()
   const [owner, setOwner] = useState()
+  const [u, setU] = useState('')
   const router = useRouter()
   const { provider, address } = useWeb3()
   const nftModule = useMemo(() => {
@@ -40,6 +41,8 @@ const Nft = () => {
     ;(async () => {
       const nfts = await nftModule.getAll()
       const selectedNft = nfts.find((nft) => nft.id === router.query.nftId)
+      const str = selectedNft.uri.split('/')[2]
+      setU(str)
       console.log(selectedNft)
       setSelectedNft(selectedNft)
     })()
@@ -101,7 +104,7 @@ const Nft = () => {
               />
             </div>
           </div>
-          <ItemActivity />
+          <ItemActivity id={u} />
         </div>
       </div>
     </div>
