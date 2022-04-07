@@ -102,5 +102,73 @@ export default createSchema({
         },
       ],
     },
+    {
+      name: 'nfts',
+      title: 'NFTs',
+      type: 'document',
+      fields: [
+        { name: 'nftName', title: 'NFT Name', type: 'string' },
+        { name: 'nftId', title: 'NFT ID', type: 'string' },
+        { name: 'nftImage', title: 'NFT Image', type: 'string' },
+        { name: 'nftDescription', title: 'NFT Description', type: 'string' },
+
+        {
+          name: 'nftOwner',
+          title: 'NFT Owner',
+          type: 'reference',
+          to: [{ type: 'users' }],
+        },
+        {
+          name: 'nftContractAddress',
+          title: 'NFT Collection',
+          type: 'string',
+        },
+      ],
+    },
+    {
+      name: 'transactions',
+      title: 'Transactions',
+      type: 'document',
+      fields: [
+        {
+          name: 'transactionId',
+          title: 'Transaction ID',
+          type: 'string',
+        },
+        {
+          name: 'nftReference',
+          title: 'NFT Reference',
+          type: 'reference',
+          to: [{ type: 'nfts' }],
+        },
+        {
+          name: 'transactionType',
+          title: 'Transaction Type',
+          type: 'string',
+        },
+        {
+          name: 'transactionAmount',
+          title: 'Transaction Amount',
+          type: 'string',
+        },
+        {
+          name: 'transactionFrom',
+          title: 'Transaction From',
+          type: 'reference',
+          to: [{ type: 'users' }],
+        },
+        {
+          name: 'transactionTo',
+          title: 'Transaction To',
+          type: 'reference',
+          to: [{ type: 'users' }],
+        },
+        {
+          name: 'transactionDate',
+          title: 'Transaction Date',
+          type: 'date',
+        },
+      ],
+    },
   ]),
 })

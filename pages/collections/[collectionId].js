@@ -112,6 +112,29 @@ const Collection = () => {
   }
 
   useEffect(() => {
+    if (!nfts) return
+    ;(async () => {
+      nfts.forEach(async (nft) => {
+        const userDoc = {
+          _type: 'nfts',
+          _id: nft.uri.split('/')[2],
+          nftName: nft.name,
+          nftId: nft.id,
+          nftImage: nft.image,
+          nftDescription: nft.description,
+          nftContractAddress: collectionId,
+
+          nftOwner: {
+            _type: 'reference',
+            _ref: await nftModule.ownerOf(nft.id),
+          },
+        }
+        const result = await client.createIfNotExists(userDoc)
+      })
+    })()
+  }, [nfts])
+
+  useEffect(() => {
     fetchCollectionData()
   }, [collectionId])
 
