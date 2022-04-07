@@ -3,6 +3,7 @@ import { MdRefresh } from 'react-icons/md'
 import { RiShareBoxLine } from 'react-icons/ri'
 import { FiMoreVertical } from 'react-icons/fi'
 import { GiShare } from 'react-icons/gi'
+import { useState } from 'react'
 
 const style = {
   wrapper: `flex`,
@@ -19,7 +20,7 @@ const style = {
   divider: `border-r-2`,
 }
 
-const GeneralDetails = ({ selectedNft }) => {
+const GeneralDetails = ({ selectedNft, owner }) => {
   return (
     <div className={style.wrapper}>
       <div className={style.infoContainer}>
@@ -27,7 +28,7 @@ const GeneralDetails = ({ selectedNft }) => {
         <div className={style.nftTitle}>{selectedNft?.name}</div>
         <div className={style.otherInfo}>
           <div className={style.ownedBy}>
-            Owned by <span className={style.accent}>captcha</span>
+            Owned by <span className={style.accent}>{owner}</span>
           </div>
           <div className={style.likes}>
             <AiFillHeart className={style.likeIcon} /> 2.3K favorites

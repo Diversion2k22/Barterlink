@@ -19,6 +19,7 @@ const MakeOffer = ({
   listings,
   marketPlaceModule,
   id,
+  owner,
 }) => {
   const [selectedMarketNft, setSelectedMarketNft] = useState()
   const [enableButton, setEnableButton] = useState(false)
@@ -46,21 +47,24 @@ const MakeOffer = ({
     setEnableButton(true)
   }, [selectedMarketNft, selectedNft])
 
-  const confirmPurchase = (toastHandler = toast) =>
-    toastHandler.success('Purchase Successful', {
-      style: {
-        background: '#04111d',
-        color: '#fff',
-      },
-    })
-  const confirmListing = (toastHandler = toast) =>
-    toastHandler.success('Listing Successful', {
-      style: {
-        background: '#04111d',
-        color: '#fff',
-      },
-    })
-
+  const confirmMessage = ({ msg, type }) => {
+    if (type === 'success') {
+      toast.success(msg, {
+        style: {
+          background: '#04111d',
+          color: '#fff',
+        },
+      })
+    }
+    if (type === 'error') {
+      toast.error(msg, {
+        style: {
+          background: '#04111d',
+          color: '#fff',
+        },
+      })
+    }
+  }
   const buyItem = async (
     listingId = selectedMarketNft.id,
     quantityDesired = 1,
@@ -80,12 +84,14 @@ const MakeOffer = ({
         listingId: listingId,
         quantityDesired: quantityDesired,
       })
+      .then((res) => {
+        confirmMessage({ msg: 'Purchased Successful', type: 'success' })
+      })
       .catch((error) => {
         console.log(error)
         console.log('error')
+        confirmMessage({ msg: error.message.slice(0, 80), type: 'error' })
       })
-
-    confirmPurchase()
   }
   // const marketPlaceModule = useMemo(() => {
   //   if (!provider) return
@@ -157,32 +163,43 @@ const MakeOffer = ({
         </div>
       ) : (
         <div>
-          <div
-            className={`${style.button} border border-[#151c22]  bg-[#363840] hover:bg-[#4c505c]`}
-          >
-            <HiTag className={style.buttonIcon} />
-            <input
-              type="text"
-              id="name"
-              className={`${style.button} dark:focus:ring-blue-500"  w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white
-              dark:placeholder-gray-400 dark:focus:border-blue-500`}
-              required
-              placeholder="Set Price (ETH)"
-              name="name"
-              ref={priceRef}
-            />
-          </div>
+          {owner === address ? (
+            <div>
+              <div
+                className={`${style.button} border border-[#151c22]  bg-[#363840] hover:bg-[#4c505c]`}
+              >
+                <HiTag className={style.buttonIcon} />
+                <input
+                  type="text"
+                  id="name"
+                  className={`${style.button} dark:focus:ring-blue-500"  w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white
+            dark:placeholder-gray-400 dark:focus:border-blue-500`}
+                  required
+                  placeholder="Set Price (ETH)"
+                  name="name"
+                  ref={priceRef}
+                />
+              </div>
+              <div
+                className={`${style.button} bg-[#2081e2] hover:bg-[#42a0ff]`}
+                onClick={() => {
+                  listItemHandler()
+                }}
+              >
+                <IoMdWallet className={style.buttonIcon} />
 
-          <div
-            className={`${style.button} bg-[#2081e2] hover:bg-[#42a0ff]`}
-            onClick={() => {
-              listItemHandler()
-            }}
-          >
-            <IoMdWallet className={style.buttonIcon} />
+                <button className={style.buttonText}>List Item</button>
+              </div>{' '}
+            </div>
+          ) : (
+            <div className={`${style.button} bg-[#2081e2] hover:bg-[#e93c19]`}>
+              <IoMdWallet className={style.buttonIcon} />
 
-            <button className={style.buttonText}>List Item</button>
-          </div>
+              <button className={style.buttonText} disabled>
+                List Item (you dont own)
+              </button>
+            </div>
+          )}
         </div>
       )}
     </div>

@@ -21,6 +21,7 @@ const Nft = () => {
   const [selectedNft, setSelectedNft] = useState()
   const [listings, setListings] = useState([])
   const [price, setPrice] = useState()
+  const [owner, setOwner] = useState()
   const router = useRouter()
   const { provider, address } = useWeb3()
   const nftModule = useMemo(() => {
@@ -72,6 +73,12 @@ const Nft = () => {
     })()
   }, [marketPlaceModule])
 
+  {
+    nftModule?.ownerOf(selectedNft?.id).then((res) => {
+      setOwner(res)
+    })
+  }
+
   return (
     <div>
       <Header />
@@ -82,7 +89,7 @@ const Nft = () => {
               <NFTImage selectedNft={selectedNft} />
             </div>
             <div className={style.detailsContainer}>
-              <GeneralDetails selectedNft={selectedNft} />
+              <GeneralDetails selectedNft={selectedNft} owner={owner} />
               <Purchase
                 price={price}
                 isListed={router.query.isListed}
@@ -90,6 +97,7 @@ const Nft = () => {
                 listings={listings}
                 marketPlaceModule={marketPlaceModule}
                 id={router.query.nftId}
+                owner={owner}
               />
             </div>
           </div>
