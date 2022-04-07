@@ -3,6 +3,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { HiTag } from 'react-icons/hi'
 import { IoMdWallet } from 'react-icons/io'
 import toast, { Toaster } from 'react-hot-toast'
+import { client } from '../../lib/sanityClient'
 import { NATIVE_TOKEN_ADDRESS, ThirdwebSDK as ThirdS } from '@thirdweb-dev/sdk'
 import { ThirdwebSDK } from '@3rdweb/sdk'
 import { useWeb3 } from '@3rdweb/hooks'
@@ -65,6 +66,9 @@ const MakeOffer = ({
       })
     }
   }
+  {
+    console.log(selectedMarketNft, 'selectedMarketNft')
+  }
   const buyItem = async (
     listingId = selectedMarketNft.id,
     quantityDesired = 1,
@@ -72,19 +76,36 @@ const MakeOffer = ({
   ) => {
     console.log(listings)
     console.log(listingId, quantityDesired, module, 'david')
-    // yo RAZA lets goooo!!!
-    //yo Qazi, ok
-    // sure okay about to run it...
-    // just clicked buy now...
-    // still error
-    // where can i see the contract address of the marketplace module
-    // in [nftId.js]
+
+    const userDoc = {
+      _type: 'transactions',
+      _id: `${selectedNft.name}_${new Date().getTime()}`,
+      transactionId: `${selectedNft.name}_${new Date().getTime()}`,
+      transactionType: 'purchase',
+      transactionAmount:
+        selectedMarketNft.buyoutCurrencyValuePerToken.displayValue,
+
+      nftReference: {
+        _type: 'reference',
+        _ref: selectedMarketNft.asset.uri.split('/')[2],
+      },
+      transactionFrom: {
+        _type: 'reference',
+        _ref: address,
+      },
+      transactionTo: {
+        _type: 'reference',
+        _ref: owner,
+      },
+      transactionDate: new Date().getDate(),
+    }
     await module
       .buyoutDirectListing({
         listingId: listingId,
         quantityDesired: quantityDesired,
       })
-      .then((res) => {
+      .then(async (res) => {
+        const result = await client.createIfNotExists(userDoc)
         confirmMessage({ msg: 'Purchased Successful', type: 'success' })
       })
       .catch((error) => {
