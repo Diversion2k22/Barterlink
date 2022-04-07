@@ -97,8 +97,9 @@ const MakeOffer = ({
         _type: 'reference',
         _ref: owner,
       },
-      transactionDate: new Date().getDate(),
+      transactionDate: new Date().toISOString(),
     }
+
     await module
       .buyoutDirectListing({
         listingId: listingId,
@@ -154,16 +155,34 @@ const MakeOffer = ({
       // how much the asset will be sold for
       buyoutPricePerToken: priceRef.current.value,
     }
+    const listDoc = {
+      _type: 'transactions',
+      _id: `${selectedNft.name}_${new Date().getTime()}`,
+      transactionId: `${selectedNft.name}_${new Date().getTime()}`,
+      transactionType: 'listing',
+      transactionAmount: priceRef.current.value,
 
+      nftReference: {
+        _type: 'reference',
+        _ref: selectedNft.uri.split('/')[2],
+      },
+      transactionFrom: {
+        _type: 'reference',
+        _ref: address,
+      },
+
+      transactionDate: new Date().toISOString(),
+    }
     await marketplace.direct
       .createListing(listing)
-      .then((res) => {
+      .then(async (res) => {
         console.log(res)
-        confirmListing()
       })
       .catch((err) => {
         console.log(err)
       })
+    await client.createIfNotExists(listDoc)
+    confirmMessage({ msg: 'Listing Successful', type: 'success' })
   }
 
   return (

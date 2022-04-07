@@ -166,7 +166,7 @@ export default createSchema({
         {
           name: 'transactionDate',
           title: 'Transaction Date',
-          type: 'date',
+          type: 'datetime',
         },
       ],
     },
