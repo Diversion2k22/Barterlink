@@ -8,6 +8,10 @@ import { NATIVE_TOKEN_ADDRESS, ThirdwebSDK as ThirdS } from '@thirdweb-dev/sdk'
 import { ThirdwebSDK } from '@3rdweb/sdk'
 import { useWeb3 } from '@3rdweb/hooks'
 import { MarketplaceModule } from '@3rdweb/sdk'
+import Spinner from '../Spinner';
+import Router from 'next/router';
+import {useRouter} from 'next/router'
+
 const style = {
   button: `mr-8 flex items-center py-2 px-12 rounded-lg cursor-pointer`,
   buttonIcon: `text-xl`,
@@ -22,9 +26,12 @@ const MakeOffer = ({
   id,
   owner,
 }) => {
+  const router = useRouter()
   const [selectedMarketNft, setSelectedMarketNft] = useState()
   const [enableButton, setEnableButton] = useState(false)
   const { provider, address } = useWeb3()
+  const [spinnerForPurchase, setSpinnerForPurchase] = useState(false)
+  const [spinnerForListing,setSpinnerForListing] = useState(false)
   // const [message, setMessage] = useState('Success')
   const priceRef = useRef()
   useEffect(() => {
@@ -74,6 +81,7 @@ const MakeOffer = ({
     quantityDesired = 1,
     module = marketPlaceModule
   ) => {
+    setSpinnerForPurchase(true);
     console.log(listings)
     console.log(listingId, quantityDesired, module, 'david')
 
@@ -108,12 +116,14 @@ const MakeOffer = ({
       .then(async (res) => {
         const result = await client.createIfNotExists(userDoc)
         confirmMessage({ msg: 'Purchased Successful', type: 'success' })
+        router.push(`/users/${address}`)
       })
       .catch((error) => {
         console.log(error)
         console.log('error')
         confirmMessage({ msg: error.message.slice(0, 80), type: 'error' })
       })
+      setSpinnerForPurchase(false)
   }
   // const marketPlaceModule = useMemo(() => {
   //   if (!provider) return
@@ -127,6 +137,7 @@ const MakeOffer = ({
   //   )
   // }, [provider])
   const listItemHandler = async (module = marketPlaceModule) => {
+    setSpinnerForListing(true)
     console.log(selectedMarketNft, 'selectedMarketNft')
     console.log(selectedNft, 'selectedNft')
     const sdk = new ThirdS(provider.getSigner())
@@ -183,6 +194,8 @@ const MakeOffer = ({
       })
     await client.createIfNotExists(listDoc)
     confirmMessage({ msg: 'Listing Successful', type: 'success' })
+    setSpinnerForListing(false)
+    router.push(`/users/${address}`)
   }
 
   return (
@@ -195,11 +208,16 @@ const MakeOffer = ({
           }}
           className={`${style.button} bg-[#2081e2] hover:bg-[#42a0ff]`}
         >
-          <IoMdWallet className={style.buttonIcon} />
-          <div className={style.buttonText}>
-            Buy Now (
-            {selectedMarketNft?.buyoutCurrencyValuePerToken.displayValue} ETH)
-          </div>
+         {spinnerForPurchase?<Spinner type="component spinner" />:
+            <div className="flex items-center">
+              <IoMdWallet className={style.buttonIcon} />
+              <div className={style.buttonText}>
+                Buy Now (
+                {selectedMarketNft?.buyoutCurrencyValuePerToken.displayValue} ETH)
+              </div>
+            </div>
+          }
+          
         </div>
       ) : (
         <div>
@@ -226,15 +244,18 @@ const MakeOffer = ({
                   listItemHandler()
                 }}
               >
-                <IoMdWallet className={style.buttonIcon} />
-
-                <button className={style.buttonText}>List Item</button>
+              {spinnerForListing?
+                <Spinner type="component spinner" />:
+                <div flex items-center>
+                  <IoMdWallet className={style.buttonIcon} />
+                  <button className={style.buttonText} disabled={spinnerForListing}>List Item</button>
+                </div>
+                }
               </div>{' '}
             </div>
           ) : (
             <div className={`${style.button} bg-[#2081e2] hover:bg-[#e93c19]`}>
               <IoMdWallet className={style.buttonIcon} />
-
               <button className={style.buttonText} disabled>
                 List Item (you dont own)
               </button>

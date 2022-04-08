@@ -10,6 +10,7 @@ import { CgWebsite } from 'react-icons/cg'
 import { AiOutlineInstagram, AiOutlineTwitter } from 'react-icons/ai'
 import { HiDotsVertical } from 'react-icons/hi'
 import NFTCard from '../../components/NFTCard'
+import Spinner from '../../components/Spinner'
 
 const style = {
   bannerImageContainer: `h-[20vh] w-screen overflow-hidden flex justify-center items-center`,
@@ -142,14 +143,7 @@ const Collection = () => {
     <div className="overflow-hidden">
       <Header />
       {loading ? (
-        <div className="flex h-screen w-full items-center justify-center">
-          <div
-            className="spinner-border inline-block h-16 w-16 animate-spin rounded-full border-4"
-            role="status"
-          >
-            <span className="visually-hidden"></span>
-          </div>
-        </div>
+        <Spinner />
       ) : (
         <div>
           <div className={style.bannerImageContainer}>

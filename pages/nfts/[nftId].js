@@ -9,6 +9,7 @@ import NFTImage from '../../components/nft/NFTImage'
 import GeneralDetails from '../../components/nft/GeneralDetails'
 import ItemActivity from '../../components/nft/ItemActivity'
 import Purchase from '../../components/nft/Purchase'
+import Spinner from '../../components/Spinner'
 
 const style = {
   wrapper: `flex flex-col items-center container-lg text-[#e5e8eb]`,
@@ -23,6 +24,7 @@ const Nft = () => {
   const [price, setPrice] = useState()
   const [owner, setOwner] = useState()
   const [u, setU] = useState('')
+  const [loading,setloading] = useState(true)
   const router = useRouter()
   const { provider, address } = useWeb3()
   const nftModule = useMemo(() => {
@@ -45,6 +47,7 @@ const Nft = () => {
       setU(str)
       console.log(selectedNft)
       setSelectedNft(selectedNft)
+      setloading(false)
     })()
   }, [nftModule])
 
@@ -85,6 +88,9 @@ const Nft = () => {
   return (
     <div>
       <Header />
+      {loading ? (
+        <Spinner />
+      ) : (
       <div className={style.wrapper}>
         <div className={style.container}>
           <div className={style.topContent}>
@@ -106,7 +112,7 @@ const Nft = () => {
           </div>
           <ItemActivity id={u} />
         </div>
-      </div>
+      </div>)}
     </div>
   )
 }
