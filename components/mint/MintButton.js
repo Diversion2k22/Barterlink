@@ -3,7 +3,7 @@ import React, { useMemo, useRef, useState } from 'react'
 import { useWeb3 } from '@3rdweb/hooks'
 import axios from 'axios'
 import toast, { Toaster } from 'react-hot-toast'
-import Link from 'next/link';
+import Link from 'next/link'
 import Spinner from '../Spinner'
 
 const MintButton = () => {
@@ -80,8 +80,8 @@ const MintButton = () => {
       })
       .then(() => {
         welcomeUser()
+        setLoading(false)
       })
-      setLoading(false)
   }
 
   return (
@@ -147,7 +147,13 @@ const MintButton = () => {
             type="submit"
             className="cursor-pointer rounded-lg border border-[#282b2f] bg-[#2081e2] p-[0.8rem] text-xl font-semibold text-black"
           >
-          {loading?<div><Spinner type="component spinner"/></div>:'Mint NFT'}
+            {loading ? (
+              <div>
+                <Spinner type="component spinner" />
+              </div>
+            ) : (
+              'Mint NFT'
+            )}
           </button>
         </form>
         {show ? (
