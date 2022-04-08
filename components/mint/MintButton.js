@@ -3,7 +3,8 @@ import React, { useMemo, useRef, useState } from 'react'
 import { useWeb3 } from '@3rdweb/hooks'
 import axios from 'axios'
 import toast, { Toaster } from 'react-hot-toast'
-import Link from 'next/link'
+import Link from 'next/link';
+import Spinner from '../Spinner'
 
 const MintButton = () => {
   const { address, provider } = useWeb3()
@@ -11,6 +12,7 @@ const MintButton = () => {
   const [img, setImg] = useState()
   const [minter, setMinter] = useState(false)
   const [path, setPath] = useState()
+  const [loading, setLoading] = useState(false)
   const nftModule = useMemo(() => {
     if (!provider) return
     console.log(provider.getSigner())
@@ -38,6 +40,7 @@ const MintButton = () => {
     //   '0x590Db7F78427BFBF99e700Eb4CADA95165Ed5DF8'
     // )
     // Custom metadata of the NFT, note that you can fully customize this metadata with other properties.
+    setLoading(true)
     e.preventDefault()
     // make a backend server api request to mint an NFT
     const formData = new FormData()
@@ -78,6 +81,7 @@ const MintButton = () => {
       .then(() => {
         welcomeUser()
       })
+      setLoading(false)
   }
 
   return (
@@ -139,11 +143,12 @@ const MintButton = () => {
             />
           </div>
 
-          <input
+          <button
             type="submit"
             className="cursor-pointer rounded-lg border border-[#282b2f] bg-[#2081e2] p-[0.8rem] text-xl font-semibold text-black"
-            value="Mint NFT"
-          />
+          >
+          {loading?<div><Spinner type="component spinner"/></div>:'Mint NFT'}
+          </button>
         </form>
         {show ? (
           <div className="mt-6">
